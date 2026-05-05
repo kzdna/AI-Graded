@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: project-task
+spec:
+  steps:
+    - name: test
+      image: python:3.9-slim
+      workingDir: /workspace/source
+      script: |
+        pip install nose
+        nosetests
+        
+    - name: cleanup
+      image: alpine:latest
+      script: |
+        echo "Cleaning up temporary files..."
+        rm -rf /workspace/source/*.tmp
